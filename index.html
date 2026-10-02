@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MBook — My Digital Library</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #f7f8fc;
+    --card: #ffffff;
+    --text: #171717;
+    --muted: #666;
+    --primary: #6c5ce7;
+    --primary-dark: #5848d6;
+    --border: #e7e7e7;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+body.dark {
+    --bg: #101116;
+    --card: #191b22;
+    --text: #ffffff;
+    --muted: #b5b5b5;
+    --border: #2b2d36;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+/* HEADER */
+
+header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.header-btn {
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.header-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* HERO */
+
+.hero {
+    padding: 80px 7%;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary), #8e7dff);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+    animation: fadeUp 0.8s ease;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 650px;
+    margin: auto;
+    opacity: 0.95;
+    animation: fadeUp 1s ease;
+}
+
+/* SEARCH */
+
+.search-container {
+    padding: 30px 7% 10px;
+    text-align: center;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 20px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+}
+
+.search-box:focus {
+    border-color: var(--primary);
+}
+
+/* BOOK SECTION */
+
+.books-section {
+    padding: 40px 7%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-title h2 {
+    font-size: 32px;
+}
+
+.section-title p {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+/* BOOK CARD */
+
+.book-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: 0.3s;
+    animation: fadeUp 0.6s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-8px);
+}
+
+.book-cover {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    background: #ddd;
+}
+
+.book-content {
+    padding: 18px;
+}
+
+.book-content h3 {
+    margin-bottom: 8px;
+}
+
+.author {
+    color: var(--primary);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.summary {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.views {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.book-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.button {
+    border: none;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.read {
+    background: var(--primary);
+    color: white;
+}
+
+.details {
+    background: #eee;
+    color: #222;
+}
+
+body.dark .details {
+    background: #30323b;
+    color: white;
+}
+
+/* ADMIN */
+
+.admin-section {
+    display: none;
+    padding: 40px 7%;
+}
+
+.admin-panel {
+    max-width: 800px;
+    margin: auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.admin-panel h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    background: var(--primary-dark);
+}
+
+.cancel-btn {
+    background: #777;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ADMIN BOOK LIST */
+
+.admin-book-list {
+    margin-top: 35px;
+}
+
+.admin-book-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background: var(--bg);
+}
+
+.admin-book-item h3 {
+    margin-bottom: 5px;
+}
+
+.admin-book-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.edit-btn,
+.delete-btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    color: white;
+}
+
+.edit-btn {
+    background: #2980b9;
+}
+
+.delete-btn {
+    background: #e74c3c;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: var(--card);
+    color: var(--text);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    animation: scaleIn 0.3s ease;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-bottom: 12px;
+}
+
+.modal-content p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* LOGIN */
+
+.login-box {
+    max-width: 400px;
+}
+
+.login-message {
+    margin-top: 12px;
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+/* ABOUT */
+
+.about {
+    padding: 70px 7%;
+    text-align: center;
+    background: var(--card);
+    margin-top: 40px;
+}
+
+.about p {
+    max-width: 700px;
+    margin: 15px auto;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 15px 5%;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    nav {
+        width: 100%;
+        justify-content: center;
+        order: 3;
+    }
+
+    .hero {
+        padding: 60px 5%;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .books-section {
+        padding: 35px 5%;
+    }
+
+    .admin-section {
+        padding: 30px 5%;
+    }
+
+    .admin-book-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">MBook</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#books">My Books</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <div class="header-buttons">
+
+        <button class="header-btn" onclick="toggleTheme()">
+            🌙 / ☀️
+        </button>
+
+        <button class="header-btn" onclick="openAdminLogin()">
+            Admin
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <h1>Welcome to MBook</h1>
+
+    <p>
+        A personal digital library where I share my books
+        and stories with readers.
+    </p>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<div class="search-container">
+
+    <input
+        type="text"
+        id="searchInput"
+        class="search-box"
+        placeholder="Search for a book..."
+        onkeyup="searchBooks()"
+    >
+
+</div>
+
+
+<!-- BOOKS -->
+
+<section class="books-section" id="books">
+
+    <div class="section-title">
+
+        <h2>My Books</h2>
+
+        <p>
+            Explore my collection of books and read them online.
+        </p>
+
+    </div>
+
+    <div class="books-grid" id="booksGrid"></div>
+
+</section>
+
+
+<!-- ADMIN SECTION -->
+
+<section class="admin-section" id="adminSection">
+
+    <div class="admin-panel">
+
+        <h2>Admin Dashboard</h2>
+
+        <p style="color: var(--muted); margin-bottom: 25px;">
+            Manage the books displayed on your MBook website.
+        </p>
+
+
+        <!-- ADD BOOK FORM -->
+
+        <form id="bookForm">
+
+            <div class="form-group">
+
+                <label>Book Title</label>
+
+                <input
+                    type="text"
+                    id="bookTitle"
+                    placeholder="Enter book title"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Author</label>
+
+                <input
+                    type="text"
+                    id="bookAuthor"
+                    placeholder="Enter author name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Book Summary</label>
+
+                <textarea
+                    id="bookSummary"
+                    placeholder="Write a short summary of your book"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Book Cover URL</label>
+
+                <input
+                    type="text"
+                    id="bookCover"
+                    placeholder="covers/my-book.jpg"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Book PDF URL</label>
+
+                <input
+                    type="text"
+                    id="bookPdf"
+                    placeholder="books/my-book.pdf"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-actions">
+
+                <button type="submit" class="primary-btn">
+                    ➕ Add Book
+                </button>
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="cancelEdit()"
+                    id="cancelEditBtn"
+                    style="display:none;"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="logoutAdmin()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- ADMIN BOOK LIST -->
+
+        <div class="admin-book-list">
+
+            <h3 style="margin-bottom: 15px;">
+                Manage Your Books
+            </h3>
+
+            <div id="adminBookList"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+    <h2>About MBook</h2>
+
+    <p>
+        MBook is my personal online library where I can publish
+        and share my books with readers. Readers can explore
+        the collection, view book information and read books online.
+    </p>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    © 2026 MBook — My Digital Library
+
+</footer>
+
+
+<!-- ADMIN LOGIN MODAL -->
+
+<div class="modal" id="adminLoginModal">
+
+    <div class="modal-content login-box">
+
+        <span class="close" onclick="closeAdminLogin()">
+            &times;
+        </span>
+
+        <h2>Admin Login</h2>
+
+        <p style="margin-bottom: 20px; color: var(--muted);">
+            Login to manage your books.
+        </p>
+
+
+        <div class="form-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                id="adminUsername"
+                placeholder="Admin username"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Admin password"
+            >
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="adminLogin()"
+        >
+            Login
+        </button>
+
+
+        <p
+            class="login-message"
+            id="loginMessage"
+        ></p>
+
+    </div>
+
+</div>
+
+
+<!-- BOOK DETAILS MODAL -->
+
+<div class="modal" id="detailsModal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeDetails()">
+            &times;
+        </span>
+
+        <h2 id="detailsTitle"></h2>
+
+        <p
+            id="detailsAuthor"
+            style="color: var(--primary); margin-bottom: 15px;"
+        ></p>
+
+        <p id="detailsSummary"></p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DEFAULT BOOKS
+========================= */
+
+const defaultBooks = [
+
+    {
+        id: 1,
+
+        title: "Where I Am Not Supposed to Be",
+
+        author: "Your Name",
+
+        summary:
+        "Write a short description of your book here. Tell readers what the book is about.",
+
+        cover:
+        "covers/where-i-am-not-supposed-to-be.jpg",
+
+        pdf:
+        "books/where-i-am-not-supposed-to-be.pdf",
+
+        views: 0
+    },
+
+    {
+        id: 2,
+
+        title: "Your Second Book",
+
+        author: "Your Name",
+
+        summary:
+        "Add the summary of your second book here.",
+
+        cover:
+        "covers/book2.jpg",
+
+        pdf:
+        "books/book2.pdf",
+
+        views: 0
+    }
+
+];
+
+
+/* =========================
+   LOAD BOOKS
+========================= */
+
+let books =
+    JSON.parse(localStorage.getItem("mbookBooks"))
+    || defaultBooks;
+
+
+/* =========================
+   SAVE BOOKS
+========================= */
+
+function saveBooks() {
+
+    localStorage.setItem(
+        "mbookBooks",
+        JSON.stringify(books)
+    );
+
+}
+
+
+/* =========================
+   DISPLAY BOOKS
+========================= */
+
+function displayBooks(bookList = books) {
+
+    const booksGrid =
+        document.getElementById("booksGrid");
+
+    booksGrid.innerHTML = "";
+
+
+    if (bookList.length === 0) {
+
+        booksGrid.innerHTML =
+        "<p style='text-align:center; width:100%; color:var(--muted);'>No books found.</p>";
+
+        return;
+
+    }
+
+
+    bookList.forEach(book => {
+
+        const card =
+        document.createElement("div");
+
+        card.className = "book-card";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${book.cover}"
+                class="book-cover"
+                alt="${book.title}"
+                onerror="this.src='https://via.placeholder.com/400x600?text=MBook'"
+            >
+
+            <div class="book-content">
+
+                <h3>${book.title}</h3>
+
+                <div class="author">
+                    By ${book.author}
+                </div>
+
+                <div class="summary">
+                    ${book.summary}
+                </div>
+
+                <div class="views">
+                    👁 ${book.views || 0} views
+                </div>
+
+                <div class="book-buttons">
+
+                    <a
+                        href="${book.pdf}"
+                        class="button read"
+                        target="_blank"
+                        onclick="increaseView(${book.id})"
+                    >
+                        📖 Read Online
+                    </a>
+
+                    <button
+                        class="button details"
+                        onclick="showDetails(${book.id})"
+                    >
+                        Details
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        booksGrid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchBooks() {
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+
+    const filtered =
+        books.filter(book =>
+
+            book.title
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            book.author
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+
+    displayBooks(filtered);
+
+}
+
+
+/* =========================
+   BOOK VIEWS
+========================= */
+
+function increaseView(id) {
+
+    const book =
+        books.find(book => book.id === id);
+
+
+    if (book) {
+
+        book.views =
+            (book.views || 0) + 1;
+
+        saveBooks();
+
+    }
+
+}
+
+
+/* =========================
+   BOOK DETAILS
+========================= */
+
+function showDetails(id) {
+
+    const book =
+        books.find(book => book.id === id);
+
+
+    if (!book) return;
+
+
+    document.getElementById("detailsTitle")
+        .textContent = book.title;
+
+
+    document.getElementById("detailsAuthor")
+        .textContent =
+        "By " + book.author;
+
+
+    document.getElementById("detailsSummary")
+        .textContent =
+        book.summary;
+
+
+    document.getElementById("detailsModal")
+        .style.display = "flex";
+
+}
+
+
+function closeDetails() {
+
+    document.getElementById("detailsModal")
+        .style.display = "none";
+
+}
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+function openAdminLogin() {
+
+    document.getElementById("adminLoginModal")
+        .style.display = "flex";
+
+}
+
+
+function closeAdminLogin() {
+
+    document.getElementById("adminLoginModal")
+        .style.display = "none";
+
+}
+
+
+function adminLogin() {
+
+    const username =
+        document.getElementById("adminUsername")
+        .value;
+
+    const password =
+        document.getElementById("adminPassword")
+        .value;
+
+
+    /*
+       TEMPORARY FRONTEND LOGIN
+
+       We will move this to the backend later.
+    */
+
+    const correctUsername = "admin";
+
+    const correctPassword = "admin123";
+
+
+    if (
+        username === correctUsername
+        &&
+        password === correctPassword
+    ) {
+
+        localStorage.setItem(
+            "mbookAdmin",
+            "true"
+        );
+
+
+        closeAdminLogin();
+
+        showAdminPanel();
+
+    }
+
+    else {
+
+        document.getElementById("loginMessage")
+            .textContent =
+            "Incorrect username or password.";
+
+    }
+
+}
+
+
+/* =========================
+   SHOW ADMIN PANEL
+========================= */
+
+function showAdminPanel() {
+
+    const isAdmin =
+        localStorage.getItem("mbookAdmin");
+
+
+    if (isAdmin !== "true") {
+
+        openAdminLogin();
+
+        return;
+
+    }
+
+
+    document.getElementById("adminSection")
+        .style.display = "block";
+
+
+    document.getElementById("adminSection")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+
+    displayAdminBooks();
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logoutAdmin() {
+
+    localStorage.removeItem(
+        "mbookAdmin"
+    );
+
+
+    document.getElementById("adminSection")
+        .style.display = "none";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================
+   ADD / EDIT BOOK
+========================= */
+
+let editingBookId = null;
+
+
+document.getElementById("bookForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const title =
+      
